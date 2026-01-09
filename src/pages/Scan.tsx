@@ -17,7 +17,7 @@ import {
   GitFork,
   Star,
   Code2,
-  Sparkles,
+  GithubIcon,
   ArrowRight,
 } from "lucide-react";
 
@@ -262,7 +262,9 @@ export default function Scan() {
                   className="text-center pt-8"
                 >
                   <Card className="bg-gradient-card border-border p-8 max-w-xl mx-auto">
-                    <Sparkles className="w-10 h-10 mx-auto text-primary mb-4" />
+                    <h2 className="text-3xl font-semibold tracking-tight text-center mb-4">
+                      Gitfolio<span className="text-primary">AI</span>
+                    </h2>
                     <h3 className="text-xl font-bold mb-2">Ready to build your portfolio?</h3>
                     <p className="text-muted-foreground mb-6">
                       Start a brainstorm session with AI to craft your unique developer story

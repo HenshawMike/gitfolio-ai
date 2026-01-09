@@ -1,4 +1,4 @@
-import { Sparkles, Github, Twitter } from "lucide-react";
+import {  Github, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function Footer() {
@@ -7,9 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-primary flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-background" />
-            </div>
+            
             <span className="font-semibold">
               Gitfolio<span className="text-primary">AI</span>
             </span>
