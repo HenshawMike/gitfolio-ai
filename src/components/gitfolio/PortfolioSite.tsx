@@ -25,7 +25,7 @@ type Props = {
 
 export default function PortfolioSite({ data, onBackToAdmin }: Props) {
   const selectedRepos = data.repos.filter(r => r.selected);
-  const siteUrl = `${data.user.username}.devfolio.app`;
+  const siteUrl = `${data.user.username}.gitfolio.app`;
 
   return (
     <div className="min-h-screen bg-slate-900">

@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Hero from '../components/devfolio/Hero';
-import DemoPreview from '../components/devfolio/DemoPreview';
-import Features from '../components/devfolio/Features';
-import HowItWorks from '../components/devfolio/HowItWorks';
-import FinalCTA from '../components/devfolio/FinalCTA';
-import AdminPanel from '../components/devfolio/AdminPanel';
-import PortfolioSite from '../components/devfolio/PortfolioSite';
+import Hero from '../components/gitfolio/Hero';
+import DemoPreview from '../components/gitfolio/DemoPreview';
+import Features from '../components/gitfolio/Features';
+import HowItWorks from '../components/gitfolio/HowItWorks';
+import FinalCTA from '../components/gitfolio/FinalCTA';
+import AdminPanel from '../components/gitfolio/AdminPanel';
+import PortfolioSite from '../components/gitfolio/PortfolioSite';
 
 // Mock GitHub data for demonstration
 const mockGitHubData = {

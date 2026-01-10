@@ -11,7 +11,7 @@ export default function DemoPreview() {
             <div className="w-3 h-3 rounded-full bg-green-400"></div>
           </div>
           <div className="flex-1 bg-white rounded-md px-4 py-1.5 text-sm text-gray-500 font-mono text-left">
-            johndoe.devfolio.app
+            johndoe.gitfolio.app
           </div>
         </div>
 

@@ -8,7 +8,7 @@ export default function Footer() {
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2 text-gray-600">
                         <Github className="w-5 h-5" />
-                        <span className="text-sm">© 2026 DevFolio</span>
+                        <span className="text-sm">© 2026 gitFolio</span>
                     </div>
                     <div className="flex items-center gap-6">
                         <a href="#" className="text-sm text-gray-600 hover:text-gray-900">Privacy</a>

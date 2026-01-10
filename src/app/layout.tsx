@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DevFolio - GitHub Portfolio Generator",
+  title: "gitFolio - GitHub Portfolio Generator",
   description: "Turn your GitHub profile into a beautiful portfolio",
 };
 
