@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Hero from '../components/gitfolio/Hero';
-import DemoPreview from '../components/gitfolio/DemoPreview';
 import Features from '../components/gitfolio/Features';
 import HowItWorks from '../components/gitfolio/HowItWorks';
 import FinalCTA from '../components/gitfolio/FinalCTA';
@@ -64,7 +63,6 @@ export default function LandingPage() {
 
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-16">
         <Hero onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />
-        <DemoPreview />
         <Features />
         <HowItWorks />
         <FinalCTA onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />

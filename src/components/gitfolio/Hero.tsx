@@ -38,7 +38,7 @@ export default function Hero({ onSubmit, username, setUsername, loading }: Props
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="your-github-username"
+              placeholder="Your github username..."
               className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base placeholder-slate-400 text-slate-900"
               required
               disabled={loading}
