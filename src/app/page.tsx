@@ -1,59 +1,76 @@
 'use client';
-import React from 'react';
-import { Github } from 'lucide-react';
+import React, { useState } from 'react';
+import Header from './Header';
 import Footer from './Footer';
+import Hero from '../components/devfolio/Hero';
+import DemoPreview from '../components/devfolio/DemoPreview';
+import Features from '../components/devfolio/Features';
+import HowItWorks from '../components/devfolio/HowItWorks';
+import FinalCTA from '../components/devfolio/FinalCTA';
+import AdminPanel from '../components/devfolio/AdminPanel';
+import PortfolioSite from '../components/devfolio/PortfolioSite';
+
+// Mock GitHub data for demonstration
+const mockGitHubData = {
+  user: {
+    name: 'John Doe',
+    username: 'johndoe',
+    email: 'john@example.com',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
+    bio: 'Full-stack developer passionate about open source',
+    location: 'San Francisco, CA',
+    followers: 234,
+    following: 189,
+  },
+  repos: [
+    { id: 1, name: 'awesome-react-app', description: 'A modern React application with TypeScript', stars: 45, forks: 12, language: 'TypeScript', url: 'https://github.com', selected: true },
+    { id: 2, name: 'nodejs-api-boilerplate', description: 'Production-ready Node.js API template', stars: 89, forks: 23, language: 'JavaScript', url: 'https://github.com', selected: true },
+    { id: 3, name: 'css-animations-library', description: 'Beautiful CSS animations collection', stars: 156, forks: 34, language: 'CSS', url: 'https://github.com', selected: true },
+    { id: 4, name: 'python-data-viz', description: 'Data visualization tools in Python', stars: 67, forks: 15, language: 'Python', url: 'https://github.com', selected: false },
+    { id: 5, name: 'machine-learning-playground', description: 'ML experiments and tutorials', stars: 234, forks: 56, language: 'Python', url: 'https://github.com', selected: true }
+  ],
+  commits: 1247,
+  pullRequests: 89,
+  issues: 145,
+};
 
 export default function LandingPage() {
-  const handleConnect = () => {
-    // In production: window.location.href = '/api/auth/github'
-    console.log('Redirecting to GitHub OAuth...');
+  const [page, setPage] = useState<'landing' | 'admin' | 'portfolio'>('landing');
+  const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setPage('admin');
+    }, 1500);
   };
+
+  const handleViewSite = () => setPage('portfolio');
+  const handleBackToAdmin = () => setPage('admin');
+
+  if (page === 'admin') {
+    return <AdminPanel data={mockGitHubData} onViewSite={handleViewSite} />;
+  }
+
+  if (page === 'portfolio') {
+    return <PortfolioSite data={mockGitHubData} onBackToAdmin={handleBackToAdmin} />;
+  }
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <header className="px-6 py-4 flex items-center justify-between border-b border-gray-200">
-        <div className="flex items-center gap-2">
-          <Github className="w-6 h-6 text-gray-700" />
-          <span className="text-xl font-normal text-gray-700">GitFolio</span>
-        </div>
-        <nav className="flex items-center gap-6">
-          <a href="#features" className="text-sm text-gray-600 hover:text-gray-900">Features</a>
-          <a href="#how-it-works" className="text-sm text-gray-600 hover:text-gray-900">How it works</a>
-          <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">Sign in</button>
-        </nav>
-      </header>
+      <Header />
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-16">
-        <div className="max-w-2xl w-full text-center">
-          {/* Hero Section */}
-          <h1 className="text-5xl md:text-6xl font-normal text-gray-900 mb-6 leading-tight">
-            Turn your GitHub into a portfolio
-          </h1>
-
-          <p className="text-xl text-gray-600 mb-12 font-light">
-            Connect your GitHub account and automatically generate a beautiful portfolio website in minutes.
-          </p>
-
-          {/* CTA Button */}
-          <div className="flex flex-col items-center gap-4">
-            <button
-              onClick={handleConnect}
-              className="group flex items-center gap-3 bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors text-base font-medium shadow-sm"
-            >
-              <Github className="w-5 h-5" />
-              Connect with GitHub
-            </button>
-            <p className="text-sm text-gray-500">
-              Free • No credit card required
-            </p>
-          </div>
- 
-        </div>
-
+        <Hero onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />
+        <DemoPreview />
+        <Features />
+        <HowItWorks />
+        <FinalCTA onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />
       </main>
-              <Footer />
+
+      <Footer />
     </div>
   );
 }
