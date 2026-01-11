@@ -61,7 +61,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-16">
+      <main className="flex flex-col items-center justify-center px-6 py-16">
         <Hero onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />
         <Features />
         <HowItWorks />
