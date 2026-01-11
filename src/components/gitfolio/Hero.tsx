@@ -1,69 +1,64 @@
 "use client";
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowUp, Plus, Paperclip } from 'lucide-react';
 
 type Props = {
-  onSubmit: () => void;
-  username: string;
-  setUsername: (v: string) => void;
-  loading: boolean;
+  portfolioInput: string;
+  setPortfolioInput: (v: string) => void;
+  handleSubmit: () => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
 };
 
-export default function Hero({ onSubmit, username, setUsername, loading }: Props) {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const value = username.trim();
-    const usernameRegex = /^[a-zA-Z0-9-]{1,39}$/;
-    if (!value) return;
-    if (!usernameRegex.test(value)) {
-      alert('Please enter a valid GitHub username (no spaces, 1-39 chars).');
-      return;
-    }
-    onSubmit();
-  };
-
+export default function Hero({ portfolioInput, setPortfolioInput, handleSubmit, handleKeyPress }: Props) {
   return (
-    <div className="max-w-2xl w-full text-center">
-      <h1 className="text-5xl md:text-6xl font-normal text-gray-900 mb-6 leading-tight">
-        Turn your GitHub into a portfolio
+    <div className="w-full max-w-4xl text-center">
+      {/* Headline */}
+      <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+        Build Your Developer Portfolio
       </h1>
-      <p className="text-xl text-gray-600 mb-12 font-light">
-        Enter your GitHub email and automatically generate a beautiful portfolio website in minutes.
+
+      {/* Subheading */}
+      <p className="text-lg md:text-xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
+        Create your professional portfolio by connecting GitHub and chatting with AI
       </p>
 
-      <div className="flex flex-col items-center gap-4">
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Your github username..."
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base placeholder-slate-400 text-slate-900"
-              required
-              disabled={loading}
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-base font-medium shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Loading...
-                </>
-              ) : (
-                <>
-                  Continue
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
+      {/* Interactive Input Box */}
+      <div className="relative max-w-2xl mx-auto mb-8">
+        <div className="relative">
+          <textarea
+            value={portfolioInput}
+            onChange={(e) => setPortfolioInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="What kind of portfolio do you want to build?"
+            className="w-full bg-white/95 backdrop-blur-sm border-0 rounded-2xl px-6 py-4 text-gray-900 placeholder-gray-500 text-lg resize-none min-h-[80px] focus:outline-none focus:ring-2 focus:ring-white/50 shadow-2xl"
+            rows={3}
+          />
+
+          {/* Action Buttons */}
+          <div className="absolute bottom-4 left-4 flex items-center space-x-2">
+            <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100">
+              <Plus className="w-5 h-5" />
+            </button>
+            <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100">
+              <Paperclip className="w-5 h-5" />
             </button>
           </div>
-        </form>
-        <p className="text-sm text-gray-500">Free • No credit card required</p>
+
+          {/* Submit Button */}
+          <button
+            onClick={handleSubmit}
+            disabled={portfolioInput.trim().length < 10}
+            className="absolute bottom-4 right-4 w-10 h-10 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </button>
+        </div>
       </div>
+
+      {/* Additional Info */}
+      <p className="text-white/60 text-sm">
+        Describe your ideal portfolio and let AI do the rest
+      </p>
     </div>
   );
 }

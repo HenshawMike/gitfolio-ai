@@ -35,15 +35,23 @@ const mockGitHubData = {
 
 export default function LandingPage() {
   const [page, setPage] = useState<'landing' | 'admin' | 'portfolio'>('landing');
-  const [username, setUsername] = useState('');
+  const [portfolioInput, setPortfolioInput] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
+    if (portfolioInput.trim().length < 10) return;
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       setPage('admin');
     }, 1500);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
   };
 
   const handleViewSite = () => setPage('portfolio');
@@ -58,17 +66,32 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Header />
+    <div className="min-h-screen gradient-bg">
+      {/* Navigation Bar */}
+      <nav className="relative z-10 flex items-center justify-between px-6 py-4 lg:px-8">
+        <div className="flex items-center">
+          <h1 className="text-2xl font-bold text-white">GitFolio</h1>
+        </div>
+        <div className="hidden md:flex items-center space-x-8">
+          <button className="text-white/80 hover:text-white transition-colors">
+            Sign in
+          </button>
+          <button className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-full hover:bg-white/20 transition-colors">
+            Get started
+          </button>
+        </div>
+        {/* Mobile menu button */}
+        <button className="md:hidden text-white">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </nav>
 
-      <main className="flex flex-col items-center justify-center px-6 py-16">
-        <Hero onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />
-        <Features />
-        <HowItWorks />
-        <FinalCTA onSubmit={handleSubmit} username={username} setUsername={setUsername} loading={loading} />
+      {/* Hero Section */}
+      <main className="flex items-center justify-center min-h-[calc(100vh-80px)] px-6">
+        <Hero portfolioInput={portfolioInput} setPortfolioInput={setPortfolioInput} handleSubmit={handleSubmit} handleKeyPress={handleKeyPress} />
       </main>
-
-      <Footer />
     </div>
   );
 }
