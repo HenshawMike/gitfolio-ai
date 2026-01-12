@@ -1,11 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import Header from './Header';
-import Footer from './Footer';
 import Hero from '../components/gitfolio/Hero';
-import Features from '../components/gitfolio/Features';
-import HowItWorks from '../components/gitfolio/HowItWorks';
-import FinalCTA from '../components/gitfolio/FinalCTA';
 import AdminPanel from '../components/gitfolio/AdminPanel';
 import PortfolioSite from '../components/gitfolio/PortfolioSite';
 
