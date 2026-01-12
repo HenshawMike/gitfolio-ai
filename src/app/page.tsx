@@ -62,29 +62,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen gradient-bg">
-      {/* Navigation Bar */}
-      <nav className="relative z-10 flex items-center justify-between px-6 py-4 lg:px-8">
-        <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-white">GitFolio</h1>
-        </div>
-        <div className="hidden md:flex items-center space-x-8">
-          <button className="text-white/80 hover:text-white transition-colors">
-            Sign in
-          </button>
-          <button className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-full hover:bg-white/20 transition-colors">
-            Get started
-          </button>
-        </div>
-        {/* Mobile menu button */}
-        <button className="md:hidden text-white">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </nav>
-
-      {/* Hero Section */}
-      <main className="flex items-center justify-center min-h-[calc(100vh-80px)] px-6">
+      <main className="flex items-center justify-center min-h-screen px-6">
         <Hero portfolioInput={portfolioInput} setPortfolioInput={setPortfolioInput} handleSubmit={handleSubmit} handleKeyPress={handleKeyPress} />
       </main>
     </div>
