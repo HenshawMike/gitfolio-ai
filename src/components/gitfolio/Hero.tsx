@@ -1,15 +1,37 @@
 "use client";
 import React from 'react';
-import { ArrowUp, Plus, Paperclip } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
-type Props = {
-  portfolioInput: string;
-  setPortfolioInput: (v: string) => void;
-  handleSubmit: () => void;
-  handleKeyPress: (e: React.KeyboardEvent) => void;
-};
+type Props = {};
 
-export default function Hero({ portfolioInput, setPortfolioInput, handleSubmit, handleKeyPress }: Props) {
+export default function Hero({}: Props) {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    if (user) {
+      // User is signed in, go to dashboard
+      router.push('/dashboard');
+    } else {
+      // User is not signed in, go to sign in
+      router.push('/sign-in');
+    }
+  };
+
+  if (!isLoaded) {
+    return (
+      <div className="w-full max-w-4xl text-center">
+        <div className="animate-pulse">
+          <div className="h-12 bg-white/20 rounded-lg mb-6"></div>
+          <div className="h-6 bg-white/20 rounded mb-12"></div>
+          <div className="h-12 bg-white/20 rounded-full mx-auto w-48"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-4xl text-center">
       {/* Headline */}
@@ -22,42 +44,18 @@ export default function Hero({ portfolioInput, setPortfolioInput, handleSubmit, 
         Create your professional portfolio by connecting GitHub and chatting with AI
       </p>
 
-      {/* Interactive Input Box */}
-      <div className="relative max-w-2xl mx-auto mb-8">
-        <div className="relative">
-          <textarea
-            value={portfolioInput}
-            onChange={(e) => setPortfolioInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="What kind of portfolio do you want to build?"
-            className="w-full bg-white/95 backdrop-blur-sm border-0 rounded-2xl px-6 py-4 text-gray-900 placeholder-gray-500 text-lg resize-none min-h-[80px] focus:outline-none focus:ring-2 focus:ring-white/50 shadow-2xl"
-            rows={3}
-          />
-
-          {/* Action Buttons */}
-          <div className="absolute bottom-4 left-4 flex items-center space-x-2">
-            <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100">
-              <Plus className="w-5 h-5" />
-            </button>
-            <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100">
-              <Paperclip className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            onClick={handleSubmit}
-            disabled={portfolioInput.trim().length < 10}
-            className="absolute bottom-4 right-4 w-10 h-10 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
-          >
-            <ArrowUp className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
+      {/* Get Started Button */}
+      <button
+        onClick={handleGetStarted}
+        className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-full hover:bg-white/20 transition-colors text-lg font-medium flex items-center gap-3 mx-auto shadow-2xl hover:shadow-white/10"
+      >
+        Get started
+        <ArrowRight className="w-5 h-5" />
+      </button>
 
       {/* Additional Info */}
-      <p className="text-white/60 text-sm">
-        Describe your ideal portfolio and let AI do the rest
+      <p className="text-white/60 text-sm mt-8">
+        Connect your GitHub and let AI build your portfolio
       </p>
     </div>
   );
