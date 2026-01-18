@@ -150,31 +150,32 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div className="min-h-screen text-foreground">
       {/* Header */}
       <motion.header
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-black/20 backdrop-blur-lg border-b border-white/10 p-4"
+        className="glass sticky top-0 z-40 border-b border-border p-4"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <motion.div
               whileHover={{ scale: 1.05 }}
-
-              className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
+              className="text-2xl font-bold gradient-text cursor-pointer"
             >
               GitFolio Studio
             </motion.div>
-            <div className="text-white/60">•</div>
-            <div className="text-white/80">{data.user.name}'s Portfolio</div>
+            <div className="text-muted-foreground">•</div>
+            <div className="text-sm font-medium text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full border border-border">
+              {data.user.name}'s Portfolio
+            </div>
           </div>
           <div className="flex items-center space-x-3">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onViewSite}
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg flex items-center space-x-2 transition-colors"
+              className="px-4 py-2 glass hover:bg-white/10 rounded-lg flex items-center space-x-2 transition-colors border border-border"
             >
               <Eye className="w-4 h-4" />
               <span>Preview</span>
@@ -182,7 +183,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center space-x-2"
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg flex items-center space-x-2 shadow-lg shadow-primary/20"
             >
               <Share className="w-4 h-4" />
               <span>Publish</span>
@@ -192,94 +193,87 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
       </motion.header>
 
       {/* Main Content */}
-      <div className="flex h-[calc(100vh-80px)]">
+      <div className="flex h-[calc(100vh-80px)] overflow-hidden">
         {/* Left Sidebar */}
         <motion.div
           initial={{ x: -300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="w-80 bg-black/20 backdrop-blur-lg border-r border-white/10 p-6 overflow-y-auto"
+          className="w-80 glass border-r border-border p-6 overflow-y-auto"
         >
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Profile Section */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold flex items-center space-x-2">
-                <Github className="w-5 h-5" />
-                <span>Profile</span>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                <Github className="w-4 h-4" />
+                Profile
               </h3>
-              <div className="flex items-center space-x-3">
-                <img src={data.user.avatar} alt={data.user.name} className="w-12 h-12 rounded-full" />
-                <div>
-                  <div className="font-medium">{data.user.name}</div>
-                  <div className="text-sm text-white/60">@{data.user.username}</div>
+              <div className="flex items-center space-x-3 p-3 rounded-xl bg-secondary/30 border border-border">
+                <img src={data.user.avatar} alt={data.user.name} className="w-10 h-10 rounded-full border-2 border-primary/20" />
+                <div className="overflow-hidden">
+                  <div className="font-medium truncate">{data.user.name}</div>
+                  <div className="text-xs text-muted-foreground truncate">@{data.user.username}</div>
                 </div>
               </div>
-              <div className="space-y-2">
-                <label className="flex items-center space-x-2 text-sm">
-                  <input type="checkbox" defaultChecked={customizations.showBio} className="rounded" />
-                  <span>Bio: {data.user.bio}</span>
+              <div className="space-y-1">
+                <label className="flex items-start space-x-3 p-2 hover:bg-secondary/30 rounded-lg transition-colors cursor-pointer group">
+                  <input type="checkbox" defaultChecked={customizations.showBio} className="mt-1 rounded border-border bg-secondary text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors line-clamp-2">{data.user.bio}</span>
                 </label>
-                <label className="flex items-center space-x-2 text-sm">
-                  <input type="checkbox" defaultChecked={customizations.showLocation} className="rounded" />
-                  <MapPin className="w-4 h-4" />
-                  <span>{data.user.location}</span>
-                </label>
-                <label className="flex items-center space-x-2 text-sm">
-                  <input type="checkbox" defaultChecked className="rounded" />
-                  <Mail className="w-4 h-4" />
-                  <span>{data.user.email}</span>
+                <label className="flex items-center space-x-3 p-2 hover:bg-secondary/30 rounded-lg transition-colors cursor-pointer group">
+                  <input type="checkbox" defaultChecked={customizations.showLocation} className="rounded border-border bg-secondary text-primary focus:ring-primary" />
+                  <MapPin className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{data.user.location}</span>
                 </label>
               </div>
             </div>
 
             {/* Stats */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">GitHub Stats</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-blue-400">{data.commits}</div>
-                  <div className="text-xs text-white/60">Commits</div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">GitHub Stats</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-secondary/20 border border-border rounded-xl p-3 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-xl font-bold text-foreground">{data.commits}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Commits</div>
                 </div>
-                <div className="bg-white/5 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-green-400">{data.pullRequests}</div>
-                  <div className="text-xs text-white/60">PRs</div>
+                <div className="bg-secondary/20 border border-border rounded-xl p-3 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-xl font-bold text-foreground">{data.pullRequests}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">PRs</div>
                 </div>
-                <div className="bg-white/5 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-yellow-400">{data.issues}</div>
-                  <div className="text-xs text-white/60">Issues</div>
+                <div className="bg-secondary/20 border border-border rounded-xl p-3 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-xl font-bold text-foreground">{data.issues}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Issues</div>
                 </div>
-                <div className="bg-white/5 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-purple-400">{data.user.followers}</div>
-                  <div className="text-xs text-white/60">Followers</div>
+                <div className="bg-secondary/20 border border-border rounded-xl p-3 text-center hover:border-primary/50 transition-colors">
+                  <div className="text-xl font-bold text-foreground">{data.user.followers}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Followers</div>
                 </div>
               </div>
             </div>
 
             {/* Navigation Tabs */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <button
                 onClick={() => setActiveTab('projects')}
-                className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                  activeTab === 'projects' ? 'bg-blue-500/20 text-blue-400' : 'hover:bg-white/5'
-                }`}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'projects' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
+                  }`}
               >
-                Projects ({selectedRepos.length})
+                <span>Projects</span>
+                <span className="bg-background/50 px-2 py-0.5 rounded text-xs">{selectedRepos.length}</span>
               </button>
               <button
                 onClick={() => setActiveTab('design')}
-                className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                  activeTab === 'design' ? 'bg-blue-500/20 text-blue-400' : 'hover:bg-white/5'
-                }`}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'design' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
+                  }`}
               >
-                Design
+                <span>Design</span>
               </button>
               <button
                 onClick={() => setActiveTab('seo')}
-                className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                  activeTab === 'seo' ? 'bg-blue-500/20 text-blue-400' : 'hover:bg-white/5'
-                }`}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'seo' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
+                  }`}
               >
-                SEO
+                <span>SEO</span>
               </button>
             </div>
           </div>
@@ -287,20 +281,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
 
         {/* Center Preview */}
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="flex-1 bg-white/5 backdrop-blur-lg m-4 rounded-2xl overflow-hidden"
+          className="flex-1 bg-secondary/10 m-4 rounded-2xl border border-border overflow-hidden relative group"
         >
-          <div className="h-full flex items-center justify-center">
-            <div className="text-center space-y-4">
-              <div className="text-6xl">🔮</div>
-              <h3 className="text-xl font-semibold">Portfolio Preview</h3>
-              <p className="text-white/60">Live preview will appear here</p>
+          <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px]" />
+          <div className="h-full flex items-center justify-center relative">
+            <div className="text-center space-y-6">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-full flex items-center justify-center animate-pulse">
+                <div className="text-4xl">✨</div>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold">Portfolio Preview</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto">
+                  Your changes update in real-time. Click the button below to see the full experience.
+                </p>
+              </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg"
+                className="px-8 py-3 bg-foreground text-background font-medium rounded-full hover:opacity-90 transition-opacity"
               >
                 Open Full Preview
               </motion.button>
@@ -313,7 +314,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
           initial={{ x: 300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="w-96 bg-black/20 backdrop-blur-lg border-l border-white/10 p-6 overflow-y-auto"
+          className="w-96 glass border-l border-border p-6 overflow-y-auto"
         >
           <AnimatePresence mode="wait">
             {activeTab === 'projects' && (
@@ -322,41 +323,45 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-4"
+                className="space-y-6"
               >
-                <h3 className="text-lg font-semibold">Select Projects</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">Select Projects</h3>
+                  <span className="text-xs text-muted-foreground">{selectedRepos.length} selected</span>
+                </div>
                 <div className="space-y-3">
                   {data.repos.map((repo) => (
                     <div
                       key={repo.id}
-                      className={`p-3 rounded-lg border transition-colors cursor-pointer ${
-                        selectedRepos.some(r => r.id === repo.id)
-                          ? 'border-green-400 bg-green-400/10'
-                          : 'border-white/10 bg-white/5 hover:bg-white/10'
-                      }`}
+                      className={`group p-4 rounded-xl border transition-all cursor-pointer ${selectedRepos.some(r => r.id === repo.id)
+                          ? 'border-primary/50 bg-primary/5'
+                          : 'border-border bg-secondary/10 hover:border-border/80 hover:bg-secondary/20'
+                        }`}
                       onClick={() => toggleRepoSelection(repo.id)}
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2">
-                            <h4 className="font-medium">{repo.name}</h4>
-                            {selectedRepos.some(r => r.id === repo.id) ? (
-                              <CheckCircle className="w-4 h-4 text-green-400" />
-                            ) : (
-                              <XCircle className="w-4 h-4 text-white/40" />
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium truncate">{repo.name}</h4>
+                            {selectedRepos.some(r => r.id === repo.id) && (
+                              <CheckCircle className="w-4 h-4 text-primary shrink-0" />
                             )}
                           </div>
-                          <p className="text-sm text-white/60 mt-1">{repo.description}</p>
-                          <div className="flex items-center space-x-4 mt-2 text-xs text-white/50">
-                            <span className="flex items-center space-x-1">
+                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{repo.description}</p>
+                          <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
                               <Star className="w-3 h-3" />
                               <span>{repo.stars}</span>
                             </span>
-                            <span className="flex items-center space-x-1">
+                            <span className="flex items-center gap-1">
                               <GitFork className="w-3 h-3" />
                               <span>{repo.forks}</span>
                             </span>
-                            <span>{repo.language}</span>
+                            {repo.language && (
+                              <span className="px-1.5 py-0.5 rounded-full bg-secondary border border-border">
+                                {repo.language}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -372,37 +377,57 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-4"
+                className="space-y-6"
               >
-                <h3 className="text-lg font-semibold flex items-center space-x-2">
-                  <Palette className="w-5 h-5" />
-                  <span>Design Customization</span>
+                <h3 className="font-semibold flex items-center gap-2">
+                  <Palette className="w-4 h-4" />
+                  Design Customization
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Theme</label>
-                    <select className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2">
-                      <option>Dark</option>
-                      <option>Light</option>
-                      <option>Auto</option>
-                    </select>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-muted-foreground">Theme</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['Dark', 'Light', 'Auto'].map((theme) => (
+                        <button
+                          key={theme}
+                          onClick={() => setCustomizations(prev => ({ ...prev, theme: theme.toLowerCase() }))}
+                          className={`px-3 py-2 rounded-lg text-sm border transition-all ${customizations.theme === theme.toLowerCase()
+                              ? 'bg-primary text-primary-foreground border-primary'
+                              : 'bg-secondary/20 border-border hover:bg-secondary/40'
+                            }`}
+                        >
+                          {theme}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Primary Color</label>
-                    <input
-                      type="color"
-                      defaultValue={customizations.primaryColor}
-                      className="w-full h-10 rounded-lg cursor-pointer"
-                    />
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-muted-foreground">Primary Color</label>
+                    <div className="flex items-center gap-2 p-2 rounded-xl bg-secondary/20 border border-border">
+                      <input
+                        type="color"
+                        value={customizations.primaryColor}
+                        onChange={(e) => setCustomizations(prev => ({ ...prev, primaryColor: e.target.value }))}
+                        className="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent"
+                      />
+                      <span className="text-sm font-mono text-muted-foreground">{customizations.primaryColor}</span>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Layout Style</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button className="p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
-                        Single Page
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-muted-foreground">Layout Style</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button className="p-4 rounded-xl border border-primary/50 bg-primary/5 flex flex-col items-center gap-2 text-primary">
+                        <div className="w-8 h-12 border border-current rounded border-dashed opacity-50" />
+                        <span className="text-xs font-medium">Single Page</span>
                       </button>
-                      <button className="p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
-                        Multi Page
+                      <button className="p-4 rounded-xl border border-border bg-secondary/10 flex flex-col items-center gap-2 text-muted-foreground hover:bg-secondary/20 transition-colors">
+                        <div className="w-8 h-12 border border-current rounded border-dashed opacity-50 flex flex-col gap-1">
+                          <div className="h-2 border-b border-current border-dashed" />
+                          <div className="h-2 border-b border-current border-dashed" />
+                        </div>
+                        <span className="text-xs font-medium">Multi Page</span>
                       </button>
                     </div>
                   </div>
@@ -416,36 +441,36 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ data, onViewSite }) => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-4"
+                className="space-y-6"
               >
-                <h3 className="text-lg font-semibold flex items-center space-x-2">
-                  <Sparkles className="w-5 h-5" />
-                  <span>SEO Optimization</span>
+                <h3 className="font-semibold flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  SEO Optimization
                 </h3>
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Meta Title</label>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-muted-foreground">Meta Title</label>
                     <input
                       type="text"
                       defaultValue={`${data.user.name} - Developer Portfolio`}
-                      className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2"
+                      className="w-full bg-secondary/20 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Meta Description</label>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-muted-foreground">Meta Description</label>
                     <textarea
-                      rows={3}
+                      rows={4}
                       defaultValue={`Portfolio of ${data.user.name}, a ${data.user.bio}. View my projects and get in touch.`}
-                      className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2"
+                      className="w-full bg-secondary/20 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all resize-none"
                     ></textarea>
                   </div>
                 </div>
-                <div className="bg-green-500/20 border border-green-400/30 rounded-lg p-3">
-                  <div className="flex items-center space-x-2 text-green-400">
+                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4">
+                  <div className="flex items-center space-x-2 text-green-500 mb-1">
                     <CheckCircle className="w-4 h-4" />
-                    <span className="text-sm font-medium">SEO Score: 85/100</span>
+                    <span className="text-sm font-bold">SEO Score: 85/100</span>
                   </div>
-                  <p className="text-xs text-green-300 mt-1">Good! Consider adding more keywords.</p>
+                  <p className="text-xs text-green-600/80">Great start! Adding more relevant keywords to your description could boost visibility.</p>
                 </div>
               </motion.div>
             )}
