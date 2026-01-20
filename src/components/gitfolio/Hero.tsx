@@ -6,15 +6,11 @@ import { useRouter } from 'next/navigation';
 type Props = {};
 
 export default function Hero({ }: Props) {
-  const { user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
   const router = useRouter();
 
   const handleGetStarted = () => {
-    if (user) {
-      router.push('/dashboard');
-    } else {
-      router.push('/sign-in');
-    }
+    router.push('/dashboard');
   };
 
   if (!isLoaded) {
