@@ -2,7 +2,7 @@
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import AdminPanel from '../../components/gitfolio/AdminPanel';
+import Dashboard from '../../components/gitfolio/Dashboard';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Mock GitHub data for demonstration
@@ -82,7 +82,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <AdminPanel data={mockGitHubData} onViewSite={handleViewSite} />
+            <Dashboard user={mockGitHubData.user} repos={mockGitHubData.repos} />
           </motion.div>
         )}
       </AnimatePresence>
