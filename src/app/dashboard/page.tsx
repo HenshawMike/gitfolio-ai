@@ -2,7 +2,7 @@
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import AdminPanel from '../../components/gitfolio/AdminPanel';
+import Dashboard from '../../components/gitfolio/Dashboard';
 
 // Mock GitHub data for demonstration
 const mockGitHubData = {
@@ -56,8 +56,21 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminPanel data={mockGitHubData} onViewSite={handleViewSite} />
+    <div className="min-h-screen gradient-bg">
+      <AnimatePresence mode="wait">
+        {!showContent ? (
+          <LoadingScreen key="loader" />
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <AdminPanel data={mockGitHubData} onViewSite={handleViewSite} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
