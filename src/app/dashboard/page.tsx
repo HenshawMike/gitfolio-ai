@@ -1,9 +1,8 @@
 "use client";
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AdminPanel from '../../components/gitfolio/AdminPanel';
-import { motion, AnimatePresence } from 'framer-motion';
 
 // Mock GitHub data for demonstration
 const mockGitHubData = {
@@ -29,35 +28,13 @@ const mockGitHubData = {
   issues: 145,
 };
 
-const LoadingScreen = () => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="fixed inset-0 z-50 flex items-center justify-center bg-[#030014]"
-  >
-    <div className="relative flex flex-col items-center">
-      <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full" />
-      <div className="relative flex flex-col items-center gap-4">
-        <div className="h-12 w-12 rounded-full border-4 border-blue-500/30 border-t-blue-500 animate-spin" />
-        <p className="text-blue-200/80 font-medium animate-pulse">Loading Dashboard...</p>
-      </div>
-    </div>
-  </motion.div>
-);
-
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     if (isLoaded && !user) {
       router.push('/sign-in');
-    } else if (isLoaded && user) {
-      // Add a small delay for smoother transition
-      const timer = setTimeout(() => setShowContent(true), 500);
-      return () => clearTimeout(timer);
     }
   }, [user, isLoaded, router]);
 
@@ -66,26 +43,21 @@ export default function DashboardPage() {
     console.log('View site clicked');
   };
 
-  if (!isLoaded || !user) {
-    return <LoadingScreen />;
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect via useEffect
   }
 
   return (
-    <div className="min-h-screen gradient-bg">
-      <AnimatePresence mode="wait">
-        {!showContent ? (
-          <LoadingScreen key="loader" />
-        ) : (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <AdminPanel data={mockGitHubData} onViewSite={handleViewSite} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="min-h-screen bg-gray-50">
+      <AdminPanel data={mockGitHubData} onViewSite={handleViewSite} />
     </div>
   );
 }
