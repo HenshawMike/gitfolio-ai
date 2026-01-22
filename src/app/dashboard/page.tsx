@@ -56,7 +56,13 @@ export default function DashboardPage() {
           }
         }
 
-        const supabaseClient = createClerkSupabaseClient(token || "");
+        if (!token) {
+          setLoadingMessage("Authentication Error: Clerk token for Supabase not found.");
+          setIsLoading(false);
+          return;
+        }
+
+        const supabaseClient = createClerkSupabaseClient(token);
 
         // Try to fetch existing profile and repos
         const { data: profile, error: profileError } = await supabaseClient.from('profiles').select('*').maybeSingle();
@@ -76,8 +82,13 @@ export default function DashboardPage() {
           setShowContent(true);
         } else {
           // If we got a permission error, it's likely the JWT template issue
+          if (profileError || reposError) {
+            console.error("Supabase Profile Error:", profileError);
+            console.error("Supabase Repos Error:", reposError);
+          }
+
           if (profileError?.code === 'PGRST301' || reposError?.code === 'PGRST301' || profileError?.message?.includes('JWT')) {
-            setLoadingMessage("Authentication Error: Please set up the 'supabase' JWT template in Clerk.");
+            setLoadingMessage(`Authentication Error: ${profileError?.message || reposError?.message || "Invalid JWT"}`);
             setIsLoading(false);
             return;
           }
