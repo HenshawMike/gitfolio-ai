@@ -1,6 +1,6 @@
 import { auth, currentUser, clerkClient } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 export async function POST() {
     const { userId } = await auth();
@@ -16,7 +16,7 @@ export async function POST() {
 
         // Get GitHub access token from Clerk
         const client = await clerkClient();
-        const response = await client.users.getUserOauthAccessToken(userId, 'oauth_github');
+        const response = await client.users.getUserOauthAccessToken(userId, 'github');
 
         if (!response.data || response.data.length === 0) {
             return NextResponse.json({ error: 'GitHub access token not found' }, { status: 400 });
@@ -37,7 +37,11 @@ export async function POST() {
         const reposData = await reposResponse.json();
 
         // Upsert Profile to Supabase
-        const { error: profileError } = await supabaseAdmin
+        const supabaseAdmin = getSupabaseAdmin();
+        if (!supabaseAdmin) {
+            throw new Error('Failed to initialize Supabase Admin client');
+        }
+        const { error: profileError } = await (supabaseAdmin as any)
             .from('profiles')
             .upsert({
                 id: userId, // Clerk ID (string)
@@ -70,7 +74,7 @@ export async function POST() {
             updated_at: new Date().toISOString(),
         }));
 
-        const { error: reposError } = await supabaseAdmin
+        const { error: reposError } = await getSupabaseAdmin()
             .from('repositories')
             .upsert(reposToUpsert);
 
