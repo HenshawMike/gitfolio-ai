@@ -27,36 +27,117 @@ export default function DashboardPage() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
   const router = useRouter();
-
   const [showContent, setShowContent] = useState(false);
   const [githubData, setGithubData] = useState<{ user: any; repos: any[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("Authenticating...");
 
   useEffect(() => {
-    if (isLoaded && !user) {
-      router.push('/sign-in');
-    } else if (isLoaded && user) {
-      // Add a small delay for smoother transition
-      const timer = setTimeout(() => setShowContent(true), 500);
-      return () => clearTimeout(timer);
+    async function initDashboard() {
+      if (!isLoaded) return;
+      if (!user) {
+        router.push('/sign-in');
+        return;
+      }
+
+      try {
+        setLoadingMessage("Fetching your data...");
+        // Get the Supabase token from Clerk
+        let token = null;
+        try {
+          token = await getToken({ template: 'supabase' });
+        } catch (tokenError: any) {
+          if (tokenError.message?.includes("No JWT template exists")) {
+            console.warn("Clerk JWT template 'supabase' not found. Data fetching might fail if RLS is enabled.");
+            setLoadingMessage("Configuration Error: Missing Clerk JWT Template 'supabase'");
+            // We can continue to try the sync API, which is server-side
+          } else {
+            throw tokenError;
+          }
+        }
+
+        if (!token) {
+          setLoadingMessage("Authentication Error: Clerk token for Supabase not found.");
+          setIsLoading(false);
+          return;
+        }
+
+        const supabaseClient = createClerkSupabaseClient(token);
+
+        // Try to fetch existing profile and repos
+        const { data: profile, error: profileError } = await supabaseClient.from('profiles').select('*').maybeSingle();
+        const { data: repos, error: reposError } = await supabaseClient.from('repositories').select('*');
+
+        if (profile && repos && repos.length > 0) {
+          setGithubData({
+            user: {
+              name: profile.full_name,
+              username: profile.username,
+              avatar: profile.avatar_url,
+              bio: profile.bio,
+            },
+            repos: repos.map(r => ({ ...r, selected: r.is_selected }))
+          });
+          setIsLoading(false);
+          setShowContent(true);
+        } else {
+          // If we got a permission error, it's likely the JWT template issue
+          if (profileError || reposError) {
+            console.error("Supabase Profile Error:", profileError);
+            console.error("Supabase Repos Error:", reposError);
+          }
+
+          if (profileError?.code === 'PGRST301' || reposError?.code === 'PGRST301' || profileError?.message?.includes('JWT')) {
+            setLoadingMessage(`Authentication Error: ${profileError?.message || reposError?.message || "Invalid JWT"}`);
+            setIsLoading(false);
+            return;
+          }
+
+          // Trigger sync if no data
+          setLoadingMessage("Syncing with GitHub...");
+          const syncResponse = await fetch('/api/sync-github', { method: 'POST' });
+          const syncData = await syncResponse.json();
+
+          if (syncData.success) {
+            // Re-fetch after sync
+            const { data: newProfile } = await supabaseClient.from('profiles').select('*').maybeSingle();
+            const { data: newRepos } = await supabaseClient.from('repositories').select('*');
+
+            if (newProfile && newRepos) {
+              setGithubData({
+                user: {
+                  name: newProfile.full_name,
+                  username: newProfile.username,
+                  avatar: newProfile.avatar_url,
+                  bio: newProfile.bio,
+                },
+                repos: newRepos.map((r: any) => ({ ...r, selected: r.is_selected }))
+              });
+            }
+          } else {
+            console.error("Sync failed:", syncData.error);
+          }
+          setIsLoading(false);
+          setShowContent(true);
+        }
+      } catch (error) {
+        console.error("Dashboard init error:", error);
+        setIsLoading(false);
+      }
     }
-  }, [user, isLoaded, router]);
 
-  const handleViewSite = () => {
-    // Handle viewing the portfolio site
-    console.log('View site clicked');
-  };
+    initDashboard();
+  }, [user, isLoaded, router, getToken]);
 
-  if (!isLoaded || !user) {
-    return <LoadingScreen />;
+  if (!isLoaded || (isLoaded && !user) || isLoading) {
+    return <LoadingScreen message={loadingMessage} />;
   }
 
   return (
     <div className="min-h-screen gradient-bg">
       <AnimatePresence mode="wait">
-        {!showContent ? (
-          <LoadingScreen key="loader" />
+        {!showContent || !githubData ? (
+          <LoadingScreen key="loader" message={loadingMessage} />
         ) : (
           <motion.div
             key="content"
@@ -64,7 +145,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Dashboard user={mockGitHubData.user} repos={mockGitHubData.repos} />
+            <Dashboard user={githubData.user} repos={githubData.repos} />
           </motion.div>
         )}
       </AnimatePresence>
