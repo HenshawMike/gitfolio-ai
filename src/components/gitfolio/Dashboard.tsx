@@ -9,20 +9,24 @@ import {
     Settings,
     CheckCircle,
     ArrowRight,
-    Layers,
     Layout,
     Moon,
     Zap,
-    Activity,
     PenTool,
-    Boxes
-} from 'lucide-react';
+    Boxes,
+} from "lucide-react";
+
+/* ---------- Types ---------- */
 
 interface GitHubUser {
     name: string;
     username: string;
+    email?: string;
     avatar: string;
     bio: string;
+    location?: string;
+    followers?: number;
+    following?: number;
 }
 
 interface Repo {
@@ -31,11 +35,20 @@ interface Repo {
     description: string;
     stars: number;
     language: string;
+    selected?: boolean;
+}
+
+interface DashboardData {
+    user: GitHubUser;
+    repos: Repo[];
+    commits?: number;
+    pullRequests?: number;
+    issues?: number;
 }
 
 interface DashboardProps {
-    user: GitHubUser;
-    repos: Repo[];
+    data: DashboardData;
+    onViewSite?: () => void;
 }
 
 type Step = 'initial' | 'customize';
@@ -66,22 +79,26 @@ export default function Dashboard({ user, repos }: DashboardProps) {
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full" />
-                        <img src={user.avatar} alt={user.username} className="relative w-16 h-16 rounded-full border-2 border-blue-500/30 shadow-2xl" />
+                        <img
+                            src={user.avatar}
+                            alt={user.username}
+                            className="relative w-16 h-16 rounded-full border-2 border-blue-500/30"
+                        />
                     </div>
+
                     <div>
-                        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                            Welcome, {user.username} <span className="text-blue-400">👋</span>
+                        <h1 className="text-2xl font-bold text-white">
+                            Welcome, {user.username}
                         </h1>
-                        <p className="text-blue-200/60 text-sm">
+                        <p className="text-sm text-blue-200/60">
                             Your GitHub data will be used to generate your portfolio.
                         </p>
                     </div>
                 </div>
-                <div className="hidden sm:block">
-                    <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-white/50 flex items-center gap-2">
-                        <Github className="w-4 h-4" />
-                        Connected
-                    </div>
+
+                <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">
+                    <Github className="w-4 h-4" />
+                    Connected
                 </div>
             </motion.div>
 

@@ -9,7 +9,7 @@ export default function Header() {
                 <Link href="/" className="text-2xl font-bold text-white">GitFolio</Link>
             </div>
             <nav className="flex items-center gap-6">
-                <Link href="/features" className="text-sm text-white/80 hover:text-white transition-colors">
+                <Link href="#features" className="text-sm text-white/80 hover:text-white transition-colors">
                     Features
                 </Link>
                 <a href="#how-it-works" className="text-sm text-white/80 hover:text-white transition-colors">How it works</a>
