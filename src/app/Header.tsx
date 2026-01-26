@@ -13,7 +13,7 @@ export default function Header() {
                     Features
                 </Link>
                 <a href="#how-it-works" className="text-sm text-white/80 hover:text-white transition-colors">How it works</a>
-                
+
                 <SignedOut>
                     <div className="flex items-center gap-4">
                         <SignInButton mode="modal">

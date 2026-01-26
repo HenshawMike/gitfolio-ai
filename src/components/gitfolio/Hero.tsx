@@ -50,7 +50,7 @@ export default function Hero({ }: Props) {
       <div className="flex flex-col items-center gap-6 animate-slide-up" style={{ animationDelay: '0.3s' }}>
         <button
           onClick={handleGetStarted}
-          className="group relative px-8 py-3.5 bg-primary text-primary-foreground rounded-lg font-semibold text-base md:text-lg hover:bg-primary/90 transition-all shadow-sm"
+          className="group relative px-8 py-3.5 bg-black text-white rounded-lg font-semibold text-base md:text-lg transition-all shadow-sm"
         >
           <span className="flex items-center gap-2">
             Get started for free
