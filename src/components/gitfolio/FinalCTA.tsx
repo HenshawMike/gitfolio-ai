@@ -23,13 +23,10 @@ export default function FinalCTA({ onSubmit, username, setUsername, loading }: P
   };
 
   return (
-    <div className="max-w-2xl w-full text-center py-24 px-4">
-      <div className="p-8 md:p-12 rounded-3xl glass relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute -top-20 -left-20 w-60 h-60 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="max-w-2xl w-full text-center py-20 px-4">
+      <div className="p-8 md:p-12 rounded-2xl border border-border bg-card shadow-sm relative overflow-hidden text-card-foreground">
 
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 relative z-10">
+        <h2 className="text-3xl md:text-4xl font-bold mb-8 relative z-10 text-foreground">
           Ready to create your portfolio?
         </h2>
 
@@ -40,24 +37,24 @@ export default function FinalCTA({ onSubmit, username, setUsername, loading }: P
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="github-username"
-              className="flex-1 px-6 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 text-white placeholder-white/30 transition-all font-mono"
+              className="flex-1 px-5 py-3.5 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-input text-foreground placeholder:text-muted-foreground transition-all font-mono"
               required
               disabled={loading}
             />
             <button
               type="submit"
               disabled={loading}
-              className="bg-white text-black px-8 py-4 rounded-xl hover:bg-gray-100 transition-all font-bold shadow-lg shadow-white/10 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              className="bg-primary text-primary-foreground px-8 py-3.5 rounded-lg hover:bg-primary/90 transition-all font-semibold shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
               {loading ? 'Loading...' : (
                 <>
                   Start
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </div>
-          <p className="text-white/40 text-sm mt-4">
+          <p className="text-muted-foreground/80 text-sm mt-4">
             Join thousands of developers building their brand.
           </p>
         </form>
