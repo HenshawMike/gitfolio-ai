@@ -78,6 +78,53 @@ export default function GradientHero() {
 - `.css` - CSS files
 - `.json` - Configuration files
 
+## What to Ingest
+
+The quality of the generated portfolios depends directly on the variety and quality of snippets in this directory. Aim for **high-utility, visually stunning components**.
+
+### 1. Essential Categories
+- **Heroes**: High-impact introduction sections.
+    - *Examples*: `mesh-gradient-hero.tsx`, `typing-animation-hero.tsx`, `minimalist-text-hero.tsx`.
+- **Navbars**: Responsive navigation layouts.
+    - *Examples*: `floating-dock-nav.tsx`, `blurred-glass-nav.tsx`.
+- **Project Cards**: Layouts for displaying GitHub repositories.
+    - *Examples*: `3d-card-effect.tsx`, `hover-reveal-card.tsx`, `bento-grid-item.tsx`.
+- **Skills/Tech Stack**: Visual representations of tools.
+    - *Examples*: `infinite-icon-scroll.tsx`, `radar-chart-skills.tsx`.
+- **Contact/Footer**: Final call-to-action sections.
+
+### 2. Design Standards (The "Wow" Factor)
+To maintain the **GitFolio AI aesthetic**, ensure snippets use:
+- **Glassmorphism**: `backdrop-blur-md`, subtle borders, and low-opacity backgrounds.
+- **Micro-animations**: Framer Motion for enters, hovers, and scroll reveals.
+- **Dark Mode First**: Focus on deep grays, blacks, and vibrant accent gradients.
+- **Responsive Design**: Ensure everything looks great on mobile using Tailwind's `sm:`, `md:`, and `lg:` prefixes.
+
+---
+
+## How the Project Is Built
+
+Once you trigger a "Build" (via the `/generate` API), GitFolio AI follows this pipeline:
+
+### 1. Context Assembly
+The AI doesn't just "guess" code. It:
+- **Analyzes GitHub Data**: Fetches your repos, bio, and languages.
+- **Semantic Search**: Searches this `/snippets` directory (using the embeddings generated during ingestion) for code that matches your requested style or theme.
+
+### 2. Tailored Generation
+The LLM (e.g., Llama 3 or GPT-4o) receives the GitHub data AND the actual code from the top 3-5 relevant snippets as "context". It then:
+- Modifies the snippets to inject **your actual data**.
+- Harmonizes the styles (colors, fonts) across all generated files.
+- Creates a complete Next.js project structure (e.g., `page.tsx`, `components/`, `globals.css`).
+
+### 3. The Result (The "Built Project")
+The final output is stored in the database as a **Virtual Project**:
+- **Architecture**: A set of `FileObject` entries (filename + content) linked to a `Portfolio` ID.
+- **Preview**: Accessible via `/preview?id={id}`, which dynamically renders these files in a sandboxed environment.
+- **Export**: Users can then download the zip or deploy directly to Vercel/Netlify.
+
+---
+
 ## How to Ingest Snippets
 
 Once you've added your code files to the appropriate directories:
@@ -88,14 +135,15 @@ python -m app.scripts.ingest_from_files
 ```
 
 The script will:
-1. Scan all subdirectories for supported file types
-2. Extract metadata from comments or infer from file path
-3. Generate embeddings for semantic search
-4. Store in the database with proper categorization
+1. **Scan**: All subdirectories for `.tsx`, `.ts`, `.css`, etc.
+2. **Metadata**: Extract from comments (recommended) or infer from the path.
+3. **Embed**: Generate semantic embeddings using Ollama (configured in `.env`).
+4. **Store**: Save to the `code_snippets` table in PostgreSQL.
+
+---
 
 ## Tips
 
-- Organize files logically by category and subcategory
-- Add metadata comments for better search results
-- Use descriptive filenames (e.g., `gradient-hero.tsx` not `hero1.tsx`)
-- Test search after ingestion to verify quality
+- **Metadata Matters**: Use `@tags` like `minimal`, `neon`, or `corporate` to help the AI find the right style.
+- **Self-Contained**: Try to make snippets self-contained (i.e., minimal external dependencies beyond Tailwind and Framer Motion).
+- **Test Ingestion**: Run the script and check the terminal output for "✅ Ingested".
